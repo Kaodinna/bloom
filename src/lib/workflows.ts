@@ -59,11 +59,11 @@ export async function triggerOnboardingComplete(userId: string) {
   );
 }
 export async function triggerGenerateProtocol(userId: string) {
-  return bubblePost("/wf/process_protocol", { calling_user: userId }, tok());
+  return bubbleGet("/wf/process_protocol", { calling_user: userId }, tok());
 }
 
 export async function triggerGenerateScore(userId: string) {
-  return bubblePost("/wf/process_score", { calling_user: userId }, tok());
+  return bubbleGet("/wf/process_score", { calling_user: userId }, tok());
 }
 
 export async function triggerGenerateNutrition(userId: string) {
