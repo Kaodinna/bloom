@@ -1,0 +1,9 @@
+{
+  "/journey/page": "app/journey/page.js",
+  "/movement/page": "app/movement/page.js",
+  "/page": "app/page.js",
+  "/onboarding/page": "app/onboarding/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/nutrition/page": "app/nutrition/page.js",
+  "/community/page": "app/community/page.js"
+}
