@@ -907,7 +907,7 @@ export default function DashboardPage() {
       {/* ── Daily focus summary ── */}
       <div className="px-6 mt-4">
         <div
-          className="rounded-3xl p-4.5 flex items-center gap-3.5"
+          className="rounded-3xl p-4.5 flex items-center gap-3.5 p-3"
           style={{
             background:
               "linear-gradient(135deg,rgba(212,176,106,0.1),rgba(180,155,120,0.06))",
@@ -915,7 +915,7 @@ export default function DashboardPage() {
           }}
         >
           <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 "
             style={{ background: "rgba(212,176,106,0.15)" }}
           >
             <Sparkles size={17} color={GOLD} />

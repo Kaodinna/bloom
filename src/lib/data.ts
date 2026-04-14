@@ -104,7 +104,49 @@ export async function createMeal(data: {
   const res = await bubblePost("/wf/create_meal", data, tok());
   return res;
 }
+export async function createMovement(data: {
+  protocol: string;
+  practice_id: string;
+  title: string;
+  subtitle: string;
+  duration: string;
+  category: string;
+  exercises_json: string;
+  why: string;
+  guidance: string;
+}): Promise<string> {
+  const res = await bubblePost("/wf/create_movement", data, tok());
+  return res.id as string;
+}
+export interface MovementPractice {
+  _id?: string;
+  protocol: string;
+  practice_id: string;
+  title: string;
+  subtitle: string;
+  duration: string;
+  category: string;
+  exercises: string; // JSON string — parse before use
+  why: string;
+  guidance?: string;
+}
 
+export async function getMovementPractices(
+  protocolId: string,
+): Promise<MovementPractice[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/getMovementPractices",
+      {
+        protocol: protocolId,
+      },
+      tok(),
+    );
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
 // ── Posts ─────────────────────────────────────────────────────
 // Uses Data API /obj/post — requires Post type exposed in Data API
 export async function getPosts(limit = 20): Promise<any[]> {

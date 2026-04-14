@@ -77,3 +77,6 @@ export async function triggerRecalibrate(userId: string) {
 export async function triggerLikePost(postId: string) {
   return bubblePost("/wf/like_post", { post_id: postId }, tok());
 }
+export async function triggerGenerateMovement() {
+  return bubbleGet("/wf/generate_movement", undefined, tok());
+}
