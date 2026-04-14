@@ -497,21 +497,13 @@ body{
 .z-50{
   z-index: 50;
 }
-.mx-auto{
-  margin-left: auto;
-  margin-right: auto;
-}
 .mx-3{
   margin-left: 0.75rem;
   margin-right: 0.75rem;
 }
-.mx-1{
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-}
-.mx-2{
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
 }
 .mb-0\.5{
   margin-bottom: 0.125rem;
@@ -593,6 +585,9 @@ body{
 }
 .mt-8{
   margin-top: 2rem;
+}
+.ml-1{
+  margin-left: 0.25rem;
 }
 .block{
   display: block;
@@ -974,6 +969,9 @@ body{
 .p-2\.5{
   padding: 0.625rem;
 }
+.p-3{
+  padding: 0.75rem;
+}
 .p-3\.5{
   padding: 0.875rem;
 }
@@ -985,9 +983,6 @@ body{
 }
 .p-6{
   padding: 1.5rem;
-}
-.p-3{
-  padding: 0.75rem;
 }
 .px-2{
   padding-left: 0.5rem;

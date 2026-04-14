@@ -19,6 +19,7 @@ export interface OnboardingData {
   partner_job_type: string;
   partner_activity: string;
   partner_diet: string;
+  skin_type: string;
 }
 
 interface OnboardingState {
@@ -49,6 +50,7 @@ const defaultData: OnboardingData = {
   partner_job_type: "",
   partner_activity: "",
   partner_diet: "",
+  skin_type: "",
 };
 
 export const useOnboarding = create<OnboardingState>((set) => ({

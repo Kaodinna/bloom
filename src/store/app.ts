@@ -27,6 +27,7 @@ export interface Profile {
   partner_job_type?: string;
   partner_activity?: string;
   partner_diet?: string;
+  skin_type?: string;
   // pregnancy
   due_date?: string;
   [key: string]: unknown;

@@ -317,6 +317,7 @@ export default function OnboardingPage() {
         partner_job_type: data.partner_job_type,
         partner_activity: data.partner_activity,
         partner_diet: data.partner_diet,
+        skin_type: data.skin_type,
         onboarding_done: true,
         female_job_risks: joinOrEmpty(femaleJob?.common_risks),
         female_nutrients: joinOrEmpty(femaleJob?.nutrient_risks),
@@ -682,6 +683,44 @@ export default function OnboardingPage() {
             onChange={(v) => setField("city", v)}
             placeholder="e.g. Zurich"
           />
+          <div style={{ marginBottom: 20 }}>
+            <label className="text-2xs text-muted uppercase tracking-widest font-medium block mb-2">
+              Skin Type
+            </label>
+            {[
+              {
+                value: "1",
+                label: "Very Fair",
+                desc: "Always burns, never tans",
+              },
+              {
+                value: "2",
+                label: "Fair",
+                desc: "Burns easily, tans minimally",
+              },
+              {
+                value: "3",
+                label: "Medium",
+                desc: "Sometimes burns, gradually tans",
+              },
+              { value: "4", label: "Olive", desc: "Rarely burns, tans well" },
+              { value: "5", label: "Brown", desc: "Very rarely burns" },
+              { value: "6", label: "Dark Brown", desc: "Almost never burns" },
+              {
+                value: "7",
+                label: "Very Dark",
+                desc: "Extremely high melanin",
+              },
+            ].map((opt) => (
+              <RadioCard
+                key={opt.value}
+                label={opt.label}
+                description={opt.desc}
+                selected={data.skin_type === opt.value}
+                onSelect={() => setField("skin_type", opt.value)}
+              />
+            ))}
+          </div>
           <InputField
             label="Country"
             value={data.country}
