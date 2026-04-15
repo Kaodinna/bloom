@@ -147,6 +147,86 @@ export async function getMovementPractices(
     return [];
   }
 }
+
+// ── Groups ────────────────────────────────────────────────────
+export async function getMyGroups(): Promise<any[]> {
+  try {
+    const uid = getUserId();
+    if (!uid) return [];
+    const res = await bubbleGet("/wf/getMyGroups", undefined, tok());
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllGroups(): Promise<any[]> {
+  try {
+    const res = await bubbleGet("/wf/getAllGroups", undefined, tok());
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getGroupPosts(groupId: string): Promise<any[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/getGroupPosts",
+      {
+        groupId: groupId,
+      },
+      tok(),
+    );
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getGroupMessages(groupId: string): Promise<any[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/getGroupMessages",
+      {
+        groupId: groupId,
+      },
+      tok(),
+    );
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function sendGroupMessage(
+  groupId: string,
+  content: string,
+): Promise<string> {
+  const res = await bubblePost(
+    "/wf/sendGroupMessage",
+    { groupId: groupId, content },
+    tok(),
+  );
+  return res.id as string;
+}
+
+export async function createGroupPost(
+  groupId: string,
+  content: string,
+  image: string,
+): Promise<string> {
+  const res = await bubblePost(
+    "/wf/createGroupPost",
+    {
+      group: groupId,
+      content,
+      image: image,
+    },
+    tok(),
+  );
+  return res.id as string;
+}
 // ── Posts ─────────────────────────────────────────────────────
 // Uses Data API /obj/post — requires Post type exposed in Data API
 export async function getPosts(limit = 20): Promise<any[]> {

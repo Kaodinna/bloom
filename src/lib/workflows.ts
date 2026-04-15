@@ -80,3 +80,11 @@ export async function triggerLikePost(postId: string) {
 export async function triggerGenerateMovement() {
   return bubbleGet("/wf/generate_movement", undefined, tok());
 }
+
+export async function triggerJoinGroup(groupId: string) {
+  return bubblePost("/wf/join_group", { groupId: groupId }, tok());
+}
+
+export async function triggerLeaveGroup(groupId: string) {
+  return bubblePost("/wf/leave_group", { group_id: groupId }, tok());
+}
