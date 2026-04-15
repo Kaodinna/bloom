@@ -247,7 +247,7 @@ export async function createGroupPost(
   const res = await bubblePost(
     "/wf/createGroupPost",
     {
-      group: groupId,
+      groupId: groupId,
       content,
       image: image,
     },
@@ -282,13 +282,9 @@ export async function likePost(postId: string) {
 export async function getComments(postId: string): Promise<any[]> {
   try {
     const res = await bubbleGet(
-      "/obj/comment",
+      "/wf/getComments",
       {
-        constraints: constraints([
-          { key: "post", constraint_type: "equals", value: postId },
-        ]),
-        sort_field: "Created Date",
-        descending: "false",
+        postId: postId,
       },
       tok(),
     );
@@ -303,8 +299,8 @@ export async function createComment(
   content: string,
 ): Promise<string> {
   const res = await bubblePost(
-    "/obj/comment",
-    { post: postId, content },
+    "/wf/createComment",
+    { postId: postId, content },
     tok(),
   );
   return res.id as string;

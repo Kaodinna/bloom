@@ -185,7 +185,7 @@ export default function PostDetailPage({
         <p className="text-2xs text-muted uppercase tracking-widest font-semibold mb-3">
           {comments.length} {comments.length === 1 ? "Reply" : "Replies"}
         </p>
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5 mb-6">
           {comments.length === 0 ? (
             <p className="text-sm text-muted text-center py-6">
               No replies yet. Be the first to respond.
@@ -222,7 +222,7 @@ export default function PostDetailPage({
       </div>
 
       {/* Reply input — fixed above bottom nav */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-card border-t border-border px-5 py-3 z-40">
+      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-card border-t border-border px-5 py-3 z-40">
         <div className="flex gap-2.5 items-center">
           <input
             value={reply}
