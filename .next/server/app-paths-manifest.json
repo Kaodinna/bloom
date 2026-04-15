@@ -1,7 +1,9 @@
 {
-  "/community/page": "app/community/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/page": "app/page.js",
   "/community/chat/[id]/page": "app/community/chat/[id]/page.js",
-  "/community/[id]/page": "app/community/[id]/page.js"
+  "/community/[id]/page": "app/community/[id]/page.js",
+  "/community/page": "app/community/page.js",
+  "/journey/page": "app/journey/page.js",
+  "/journey/protocol/page": "app/journey/protocol/page.js"
 }

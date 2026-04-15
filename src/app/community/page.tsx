@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/hooks/useProfile";
 import { useAppStore } from "@/store/app";
+import BottomNav from "@/components/shared/BottomNav";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import {
   getPosts,
@@ -1307,6 +1308,7 @@ export default function CommunityPage() {
           </div>
         </div>
       )}
+      <BottomNav />
     </div>
   );
 }
