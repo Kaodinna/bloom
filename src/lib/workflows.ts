@@ -86,5 +86,5 @@ export async function triggerJoinGroup(groupId: string) {
 }
 
 export async function triggerLeaveGroup(groupId: string) {
-  return bubblePost("/wf/leave_group", { group_id: groupId }, tok());
+  return bubblePost("/wf/leave_group", { groupId: groupId }, tok());
 }

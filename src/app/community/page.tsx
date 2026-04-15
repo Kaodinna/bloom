@@ -131,7 +131,7 @@ export default function CommunityPage() {
         data = await getGroupPosts(selectedGroup._id);
       } else {
         // No groups joined yet — show global feed
-        data = await getPosts(30);
+        data = await getPosts();
       }
       setPosts(data);
     } catch {

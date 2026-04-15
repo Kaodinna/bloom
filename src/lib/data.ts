@@ -183,6 +183,34 @@ export async function getGroupPosts(groupId: string): Promise<any[]> {
     return [];
   }
 }
+export async function getPost(postId: string): Promise<any[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/get_a_post",
+      {
+        postId: postId,
+      },
+      tok(),
+    );
+    return res.response?.results;
+  } catch {
+    return [];
+  }
+}
+export async function getGroup(groupId: string): Promise<any[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/get_a_group",
+      {
+        groupId: groupId,
+      },
+      tok(),
+    );
+    return res.response?.results;
+  } catch {
+    return [];
+  }
+}
 
 export async function getGroupMessages(groupId: string): Promise<any[]> {
   try {
@@ -229,17 +257,9 @@ export async function createGroupPost(
 }
 // ── Posts ─────────────────────────────────────────────────────
 // Uses Data API /obj/post — requires Post type exposed in Data API
-export async function getPosts(limit = 20): Promise<any[]> {
+export async function getPosts(): Promise<any[]> {
   try {
-    const res = await bubbleGet(
-      "/obj/post",
-      {
-        limit,
-        sort_field: "Created Date",
-        descending: "true",
-      },
-      tok(),
-    );
+    const res = await bubbleGet("/wf/get_all_posts", undefined, tok());
     return res.response?.results ?? [];
   } catch {
     return [];

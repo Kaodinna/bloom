@@ -1,6 +1,6 @@
 {
-  "/community/chat/[id]/page": "app/community/chat/[id]/page.js",
   "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/community/page": "app/community/page.js"
+  "/community/page": "app/community/page.js",
+  "/community/chat/[id]/page": "app/community/chat/[id]/page.js"
 }
