@@ -295,7 +295,7 @@ export default function OnboardingPage() {
       };
     }
     const femaleJob = lookupJob(data.job_type, "female");
-    const maleJob = lookupJob(data.partner_job_type, "male");
+    const maleJob = lookupJob(data.partners_job_type, "male");
     const maleImpact = getMaleImpact(maleJob);
     try {
       await updateProfile({
@@ -314,7 +314,7 @@ export default function OnboardingPage() {
         diet_type: data.diet_type,
         sun_exposure: data.sun_exposure,
         partner_age: Number(data.partner_age) || 0,
-        partner_job_type: data.partner_job_type,
+        partner_job_type: data.partners_job_type,
         partner_activity: data.partner_activity,
         partner_diet: data.partner_diet,
         skin_type: data.skin_type,
@@ -330,6 +330,7 @@ export default function OnboardingPage() {
         male_sperm_impact: maleImpact.sperm,
         male_hormone_impact: maleImpact.hormones,
         baby_impact: maleImpact.baby,
+        current_week: Number(data.current_week) || 0,
       });
 
       const uid = getUserId();
@@ -540,13 +541,22 @@ export default function OnboardingPage() {
           </p>
         </div>
         <div style={{ flex: 1 }}>
-          {data.journey_type === "currently_pregnant" ? (
+          {data.journey_type === "currently_pregnant" ||
+          data.journey_type === "postpartum" ? (
             <InputField
-              label="Current week of pregnancy"
-              value={data.target_conception_season}
-              onChange={(v) => setField("target_conception_season", v)}
+              label={
+                data.journey_type === "currently_pregnant"
+                  ? "Current week of pregnancy"
+                  : "Weeks since delivery"
+              }
+              value={data.current_week}
+              onChange={(v) => setField("current_week", v)}
               type="number"
-              placeholder="e.g. 15"
+              placeholder={
+                data.journey_type === "currently_pregnant"
+                  ? "e.g. 15"
+                  : "e.g. 8"
+              }
             />
           ) : (
             <InputField
@@ -885,7 +895,7 @@ export default function OnboardingPage() {
                     key={job}
                     className="w-full text-left px-4 py-2.5 text-sm text-charcoal hover:bg-gold-light transition-colors"
                     onClick={() => {
-                      setField("partner_job_type", job);
+                      setField("partners_job_type", job);
                       setmSearch(job);
                       setShowPartnerJobList(false);
                     }}

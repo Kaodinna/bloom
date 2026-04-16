@@ -1,9 +1,9 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/community/chat/[id]/page": "app/community/chat/[id]/page.js",
-  "/community/[id]/page": "app/community/[id]/page.js",
   "/community/page": "app/community/page.js",
-  "/journey/page": "app/journey/page.js",
-  "/journey/protocol/page": "app/journey/protocol/page.js"
+  "/journey/protocol/[id]/page": "app/journey/protocol/[id]/page.js",
+  "/journey/protocol/page": "app/journey/protocol/page.js",
+  "/journey/pregnancy/page": "app/journey/pregnancy/page.js",
+  "/nutrition/page": "app/nutrition/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/movement/page": "app/movement/page.js"
 }

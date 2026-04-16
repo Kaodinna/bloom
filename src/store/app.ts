@@ -24,10 +24,11 @@ export interface Profile {
   sun_exposure?: string;
   // partner
   partner_age?: number;
-  partner_job_type?: string;
+  partners_job_type?: string;
   partner_activity?: string;
   partner_diet?: string;
   skin_type?: string;
+  current_week?: number;
   // pregnancy
   due_date?: string;
   [key: string]: unknown;

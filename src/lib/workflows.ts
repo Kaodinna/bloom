@@ -88,3 +88,12 @@ export async function triggerJoinGroup(groupId: string) {
 export async function triggerLeaveGroup(groupId: string) {
   return bubblePost("/wf/leave_group", { groupId: groupId }, tok());
 }
+export async function triggerGenerateJourney(userId: string) {
+  return bubblePost("/wf/generate_journey", { calling_user: userId }, tok());
+}
+export async function triggerGenerateWeekDetail() {
+  return bubbleGet("/wf/generate_week_detail", undefined, tok());
+}
+export async function triggerGenerateRecoveryDetail() {
+  return bubbleGet("/wf/generate_recovery_detail", undefined, tok());
+}

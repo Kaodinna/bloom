@@ -339,3 +339,140 @@ export async function sendMessage(
   );
   return res.id as string;
 }
+
+export async function getJourneyPhases(): Promise<any[]> {
+  try {
+    const res = await bubbleGet("/wf/journeyphase", undefined, tok());
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getMilestones(phaseId: string): Promise<any[]> {
+  try {
+    const res = await bubbleGet(
+      "/wf/milestone",
+      {
+        phaseId: phaseId,
+      },
+      tok(),
+    );
+    return res.response?.results ?? [];
+  } catch {
+    return [];
+  }
+}
+
+// export async function createJourneyPhase(data: {
+//   protocol: string;
+//   phase_number: number;
+//   title: string;
+//   week_range: string;
+//   status: string;
+// }): Promise<string> {
+//   const res = await bubblePost("/wf/create_journeyphase", data, tok());
+//   return res._id as string;
+// }
+export async function createJourneyPhase(data: {
+  protocol: string;
+  phase_number: number;
+  title: string;
+  week_range: string;
+  status: string;
+}): Promise<string> {
+  const res = await bubblePost("/wf/create_journeyphase", data, tok());
+  return res?.response?.results?._id as string;
+}
+export async function createMilestone(data: {
+  phase: string;
+  week_label: string;
+  title: string;
+  summary: string;
+  status: string;
+  what_happening: string;
+  focus_goals: string;
+  actions: string;
+}): Promise<string> {
+  const res = await bubblePost("/wf/create_milestone", data, tok());
+  return res.id as string;
+}
+export async function getWeekDetail(weekNumber: number): Promise<any | null> {
+  try {
+    const res = await bubbleGet(
+      "/wf/get_weekdetail",
+      {
+        week_number: weekNumber,
+      },
+      tok(),
+    );
+    return res.response?.results ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function createWeekDetail(data: {
+  week_number: number;
+  trimester: string;
+  baby_milestone: string;
+  nutrition_focus: string;
+  movement_focus: string;
+  supplements: string;
+  appointments: string;
+  avoid_today: string;
+  job_note: string;
+}): Promise<string> {
+  const res = await bubblePost("/wf/create_weekdetail", data, tok());
+  return res?.response?.results?._id as string;
+}
+
+// ── Recovery Detail (Postpartum) ─────────────────────────────
+export async function getRecoveryDetail(
+  weekNumber: number,
+): Promise<any | null> {
+  try {
+    const res = await bubbleGet(
+      "/wf/get_recoverydetail",
+      {
+        week_number: weekNumber,
+      },
+
+      tok(),
+    );
+    return res.response?.results ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function createRecoveryDetail(data: {
+  week_number: number;
+  phase: string;
+  hormone_note: string;
+  nutrition_focus: string;
+  movement_focus: string;
+  supplements: string;
+  priorities: string;
+  checkups: string;
+  avoid_today: string;
+  job_note: string;
+}): Promise<string> {
+  const res = await bubblePost("/wf/create_recoverydetail", data, tok());
+  return res?.response?.results?._id as string;
+}
+// ── Single milestone by ID ────────────────────────────────────
+export async function getMilestone(milestoneId: string): Promise<any | null> {
+  try {
+    const res = await bubbleGet(
+      "/wf/get_a_milestone",
+      {
+        milestoneId: milestoneId,
+      },
+      tok(),
+    );
+    return res.response?.results;
+  } catch {
+    return null;
+  }
+}
