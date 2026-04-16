@@ -50,35 +50,35 @@ export default function StepPartner({
           value={data.partner_job_type}
           onChange={(e) => setField("partner_job_type", e.target.value)}
         /> */}
-              <div className="relative">
-        <Input
-          label="Your Job"
-          placeholder="Type to search..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setShowList(true)
-          }}
-          onFocus={() => setShowList(true)}
-        />
-        {showList && filtered.length > 0 && (
-          <div className="absolute z-10 w-full bg-white border border-border rounded-xl mt-1 shadow-sm max-h-48 overflow-y-auto">
-            {filtered.map((job) => (
-              <button
-                key={job}
-                className="w-full text-left px-4 py-2.5 text-sm text-charcoal hover:bg-gold-light transition-colors"
-                onClick={() => {
-                  setField('partner_job_type', job)
-                  setSearch(job)
-                  setShowList(false)
-                }}
-              >
-                {job}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+        <div className="relative">
+          <Input
+            label="Your Job"
+            placeholder="Type to search..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setShowList(true);
+            }}
+            onFocus={() => setShowList(true)}
+          />
+          {showList && filtered.length > 0 && (
+            <div className="absolute z-10 w-full bg-white border border-border rounded-xl mt-1 shadow-sm max-h-48 overflow-y-auto">
+              {filtered.map((job) => (
+                <button
+                  key={job}
+                  className="w-full text-left px-4 py-2.5 text-sm text-charcoal hover:bg-gold-light transition-colors"
+                  onClick={() => {
+                    setField("partners_job_type", job);
+                    setSearch(job);
+                    setShowList(false);
+                  }}
+                >
+                  {job}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
         <Input
           label="Partner's Diet"
           placeholder="e.g. Omnivore, Vegan..."
