@@ -1,9 +1,3 @@
 {
-  "/community/page": "app/community/page.js",
-  "/journey/protocol/[id]/page": "app/journey/protocol/[id]/page.js",
-  "/journey/protocol/page": "app/journey/protocol/page.js",
-  "/journey/pregnancy/page": "app/journey/pregnancy/page.js",
-  "/nutrition/page": "app/nutrition/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/movement/page": "app/movement/page.js"
+  "/nutrition/page": "app/nutrition/page.js"
 }

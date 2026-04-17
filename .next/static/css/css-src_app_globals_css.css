@@ -482,23 +482,14 @@ body{
 .bottom-0{
   bottom: 0px;
 }
-.bottom-16{
-  bottom: 4rem;
-}
-.left-1\/2{
-  left: 50%;
-}
-.left-3\.5{
-  left: 0.875rem;
-}
-.right-3{
-  right: 0.75rem;
-}
-.top-1\/2{
-  top: 50%;
+.bottom-20{
+  bottom: 5rem;
 }
 .bottom-5{
   bottom: 1.25rem;
+}
+.left-1\/2{
+  left: 50%;
 }
 .left-2{
   left: 0.5rem;
@@ -506,11 +497,14 @@ body{
 .right-2{
   right: 0.5rem;
 }
+.right-3{
+  right: 0.75rem;
+}
+.top-1\/2{
+  top: 50%;
+}
 .top-2{
   top: 0.5rem;
-}
-.bottom-20{
-  bottom: 5rem;
 }
 .z-10{
   z-index: 10;
@@ -525,17 +519,13 @@ body{
   margin-left: 0.75rem;
   margin-right: 0.75rem;
 }
-.mx-auto{
-  margin-left: auto;
-  margin-right: auto;
-}
-.-mx-1{
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-}
 .mx-3\.5{
   margin-left: 0.875rem;
   margin-right: 0.875rem;
+}
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
 }
 .mb-0\.5{
   margin-bottom: 0.125rem;
@@ -648,8 +638,14 @@ body{
 .h-11{
   height: 2.75rem;
 }
+.h-14{
+  height: 3.5rem;
+}
 .h-2{
   height: 0.5rem;
+}
+.h-2\.5{
+  height: 0.625rem;
 }
 .h-20{
   height: 5rem;
@@ -675,17 +671,8 @@ body{
 .h-px{
   height: 1px;
 }
-.h-14{
-  height: 3.5rem;
-}
-.h-2\.5{
-  height: 0.625rem;
-}
 .max-h-48{
   max-height: 12rem;
-}
-.min-h-0{
-  min-height: 0px;
 }
 .min-h-full{
   min-height: 100%;
@@ -705,17 +692,20 @@ body{
 .w-11{
   width: 2.75rem;
 }
+.w-14{
+  width: 3.5rem;
+}
 .w-16{
   width: 4rem;
 }
 .w-2{
   width: 0.5rem;
 }
+.w-2\.5{
+  width: 0.625rem;
+}
 .w-20{
   width: 5rem;
-}
-.w-32{
-  width: 8rem;
 }
 .w-5{
   width: 1.25rem;
@@ -740,12 +730,6 @@ body{
 }
 .w-px{
   width: 1px;
-}
-.w-14{
-  width: 3.5rem;
-}
-.w-2\.5{
-  width: 0.625rem;
 }
 .min-w-0{
   min-width: 0px;
@@ -842,6 +826,9 @@ body{
 .justify-around{
   justify-content: space-around;
 }
+.gap-0\.5{
+  gap: 0.125rem;
+}
 .gap-1{
   gap: 0.25rem;
 }
@@ -865,9 +852,6 @@ body{
 }
 .gap-5{
   gap: 1.25rem;
-}
-.gap-0\.5{
-  gap: 0.125rem;
 }
 .self-end{
   align-self: flex-end;
@@ -907,6 +891,9 @@ body{
 .rounded-\[20px\]{
   border-radius: 20px;
 }
+.rounded-\[22px\]{
+  border-radius: 22px;
+}
 .rounded-full{
   border-radius: 9999px;
 }
@@ -918,9 +905,6 @@ body{
 }
 .rounded-xl{
   border-radius: 0.75rem;
-}
-.rounded-\[22px\]{
-  border-radius: 22px;
 }
 .border{
   border-width: 1px;
@@ -954,12 +938,6 @@ body{
 .border-gold\/20{
   border-color: rgb(212 176 106 / 0.2);
 }
-.border-gold\/30{
-  border-color: rgb(212 176 106 / 0.3);
-}
-.border-transparent{
-  border-color: transparent;
-}
 .border-white{
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
@@ -977,6 +955,12 @@ body{
 }
 .bg-black\/10{
   background-color: rgb(0 0 0 / 0.1);
+}
+.bg-black\/40{
+  background-color: rgb(0 0 0 / 0.4);
+}
+.bg-black\/50{
+  background-color: rgb(0 0 0 / 0.5);
 }
 .bg-border{
   background-color: rgba(180,155,120,0.18);
@@ -1003,10 +987,6 @@ body{
 .bg-gold\/40{
   background-color: rgb(212 176 106 / 0.4);
 }
-.bg-green-500{
-  --tw-bg-opacity: 1;
-  background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
-}
 .bg-section{
   --tw-bg-opacity: 1;
   background-color: rgb(237 232 223 / var(--tw-bg-opacity, 1));
@@ -1022,12 +1002,6 @@ body{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
-.bg-black\/40{
-  background-color: rgb(0 0 0 / 0.4);
-}
-.bg-black\/50{
-  background-color: rgb(0 0 0 / 0.5);
-}
 .object-cover{
   -o-object-fit: cover;
      object-fit: cover;
@@ -1035,8 +1009,14 @@ body{
 .p-0{
   padding: 0px;
 }
+.p-0\.5{
+  padding: 0.125rem;
+}
 .p-1{
   padding: 0.25rem;
+}
+.p-2{
+  padding: 0.5rem;
 }
 .p-2\.5{
   padding: 0.625rem;
@@ -1056,11 +1036,9 @@ body{
 .p-6{
   padding: 1.5rem;
 }
-.p-0\.5{
-  padding: 0.125rem;
-}
-.p-2{
-  padding: 0.5rem;
+.px-1{
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 .px-2{
   padding-left: 0.5rem;
@@ -1126,24 +1104,23 @@ body{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+.py-5{
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-.px-1{
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
 }
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-.py-5{
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
 .pb-0{
   padding-bottom: 0px;
+}
+.pb-0\.5{
+  padding-bottom: 0.125rem;
 }
 .pb-1{
   padding-bottom: 0.25rem;
@@ -1151,14 +1128,17 @@ body{
 .pb-10{
   padding-bottom: 2.5rem;
 }
+.pb-2{
+  padding-bottom: 0.5rem;
+}
 .pb-2\.5{
   padding-bottom: 0.625rem;
 }
-.pb-20{
-  padding-bottom: 5rem;
-}
 .pb-24{
   padding-bottom: 6rem;
+}
+.pb-3{
+  padding-bottom: 0.75rem;
 }
 .pb-3\.5{
   padding-bottom: 0.875rem;
@@ -1169,8 +1149,11 @@ body{
 .pb-4{
   padding-bottom: 1rem;
 }
-.pl-10{
-  padding-left: 2.5rem;
+.pb-5{
+  padding-bottom: 1.25rem;
+}
+.pl-1{
+  padding-left: 0.25rem;
 }
 .pl-2\.5{
   padding-left: 0.625rem;
@@ -1187,17 +1170,14 @@ body{
 .pr-3{
   padding-right: 0.75rem;
 }
-.pr-3\.5{
-  padding-right: 0.875rem;
-}
 .pr-4{
   padding-right: 1rem;
 }
+.pr-5{
+  padding-right: 1.25rem;
+}
 .pt-16{
   padding-top: 4rem;
-}
-.pt-2\.5{
-  padding-top: 0.625rem;
 }
 .pt-20{
   padding-top: 5rem;
@@ -1216,24 +1196,6 @@ body{
 }
 .pt-6{
   padding-top: 1.5rem;
-}
-.pl-1{
-  padding-left: 0.25rem;
-}
-.pb-0\.5{
-  padding-bottom: 0.125rem;
-}
-.pb-2{
-  padding-bottom: 0.5rem;
-}
-.pb-3{
-  padding-bottom: 0.75rem;
-}
-.pr-5{
-  padding-right: 1.25rem;
-}
-.pb-5{
-  padding-bottom: 1.25rem;
 }
 .text-left{
   text-align: left;
@@ -1343,16 +1305,9 @@ body{
 .text-charcoal\/70{
   color: rgb(26 24 22 / 0.7);
 }
-.text-charcoal\/80{
-  color: rgb(26 24 22 / 0.8);
-}
 .text-gold{
   --tw-text-opacity: 1;
   color: rgb(212 176 106 / var(--tw-text-opacity, 1));
-}
-.text-green-600{
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
 }
 .text-muted{
   --tw-text-opacity: 1;
@@ -1396,9 +1351,6 @@ body{
 }
 .opacity-100{
   opacity: 1;
-}
-.opacity-60{
-  opacity: 0.6;
 }
 .shadow-card{
   --tw-shadow: 0 2px 18px rgba(150,120,80,0.07);
@@ -1449,6 +1401,9 @@ body{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.duration-1000{
+  transition-duration: 1000ms;
+}
 .duration-200{
   transition-duration: 200ms;
 }
@@ -1457,12 +1412,6 @@ body{
 }
 .duration-500{
   transition-duration: 500ms;
-}
-.duration-700{
-  transition-duration: 700ms;
-}
-.duration-1000{
-  transition-duration: 1000ms;
 }
 .ease-in-out{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
