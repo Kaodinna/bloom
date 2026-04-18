@@ -99,7 +99,8 @@ export async function createMeal(data: {
   name: string;
   description: string;
   nutrients: string;
-  // calories?: number;
+  baby_benefit?: string;
+  mother_benefit?: string;
 }) {
   const res = await bubblePost("/wf/create_meal", data, tok());
   return res;

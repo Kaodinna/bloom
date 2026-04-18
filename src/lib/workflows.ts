@@ -7,6 +7,7 @@ import { bubbleGet, bubblePost } from "./bubble";
 import { getToken } from "./auth";
 import { Job } from "@/data/job_index";
 import { OnboardingData } from "@/store/onboarding";
+import { WeekContext } from "@/data/weekContext";
 
 function tok(): string {
   const t = getToken();
@@ -66,8 +67,24 @@ export async function triggerGenerateScore(userId: string) {
   return bubbleGet("/wf/process_score", { calling_user: userId }, tok());
 }
 
-export async function triggerGenerateNutrition(userId: string) {
-  return bubbleGet("/wf/generate_nutrition", { calling_user: userId }, tok());
+// export async function triggerGenerateNutrition(userId: string) {
+//   return bubbleGet("/wf/generate_nutrition", { calling_user: userId }, tok());
+// }
+
+export async function triggerGenerateNutrition(
+  userId: string,
+  weekCtx: WeekContext,
+) {
+  return bubbleGet(
+    "/wf/generate_nutrition",
+    {
+      calling_user: userId,
+      week_context: weekCtx.week_context,
+      food_matches: weekCtx.food_matches,
+      food_detail: weekCtx.food_detail,
+    },
+    tok(),
+  );
 }
 
 export async function triggerRecalibrate(userId: string) {

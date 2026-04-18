@@ -5,6 +5,7 @@ import { useProtocol } from "@/hooks/useProtocol";
 import { useAppStore } from "@/store/app";
 import { createMeal, getMeals } from "@/lib/data";
 import { triggerGenerateNutrition } from "@/lib/workflows";
+import { getWeekContext } from "@/data/weekContext";
 import { getUserId } from "@/lib/auth";
 import BottomNav from "@/components/shared/BottomNav";
 import LoadingScreen from "@/components/shared/LoadingScreen";
@@ -31,42 +32,10 @@ interface Meal {
   description: string;
   nutrients: string;
   calories?: number;
+  baby_benefit?: string;
+  mother_benefit?: string;
 }
 
-const fallbackMeals: Meal[] = [
-  {
-    _id: "f1",
-    meal_type: "breakfast",
-    name: "Avocado & Egg Toast",
-    description: "Whole grain toast with smashed avocado and poached eggs.",
-    nutrients: "Folate, Healthy Fats, Protein",
-    calories: 380,
-  },
-  {
-    _id: "f2",
-    meal_type: "lunch",
-    name: "Lentil & Spinach Soup",
-    description: "Iron-rich lentil soup with wilted spinach and turmeric.",
-    nutrients: "Iron, Vitamin C, Fiber",
-    calories: 320,
-  },
-  {
-    _id: "f3",
-    meal_type: "dinner",
-    name: "Salmon with Roasted Vegetables",
-    description: "Omega-3 rich salmon fillet with seasonal roasted vegetables.",
-    nutrients: "Omega-3, Vitamin D, Magnesium",
-    calories: 520,
-  },
-  {
-    _id: "f4",
-    meal_type: "snacks",
-    name: "Greek Yogurt with Berries",
-    description: "Full-fat Greek yogurt with mixed berries and chia seeds.",
-    nutrients: "Probiotics, Antioxidants, Calcium",
-    calories: 180,
-  },
-];
 const SECTIONS = [
   {
     id: "breakfast",
@@ -111,119 +80,13 @@ export default function NutritionPage() {
   const { profile, protocol } = useAppStore();
   const [meals, setMeals] = useState<Record<string, Meal[]>>({});
   const [loadingMeals, setLoadingMeals] = useState(true);
+  const [generating, setGenerating] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(
     "breakfast",
   );
   const [expandedMeal, setExpandedMeal] = useState<string | null>(null);
   const [expandedSupp, setExpandedSupp] = useState<string | null>(null);
-  const [generating, setGenerating] = useState(false);
-  const [, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   if (!profile || loading || !protocol?._id) return;
-  //   async function load() {
-  //     try {
-  //       const data: Meal[] = await getMeals(protocol!._id);
-  //       if (data.length) {
-  //         setMeals(groupMeals(data));
-  //         setLoadingMeals(false);
-  //       } else {
-  //         setGenerating(true);
-  //         await triggerGenerateNutrition(getUserId() ?? profile?._id);
-  //         let attempts = 0;
-  //         const iv = setInterval(async () => {
-  //           attempts++;
-  //           if (attempts > 8) {
-  //             clearInterval(iv);
-  //             setLoadingMeals(false);
-  //             setGenerating(false);
-  //             return;
-  //           }
-  //           const d: Meal[] = await getMeals(protocol!._id);
-  //           if (d.length) {
-  //             clearInterval(iv);
-  //             setMeals(groupMeals(d));
-  //             setLoadingMeals(false);
-  //             setGenerating(false);
-  //           }
-  //         }, 3000);
-  //       }
-  //     } catch {
-  //       setLoadingMeals(false);
-  //     }
-  //   }
-  //   load();
-  // }, [profile, protocol, loading]);
-
   const hasCreatedMeals = useRef(false);
-  // useEffect(() => {
-  //   if (!profile || !protocol?._id) return;
-
-  //   // ⛔ Prevent duplicate execution
-  //   if (hasCreatedMeals.current) return;
-
-  //   let cancelled = false;
-
-  //   async function load() {
-  //     try {
-  //       const existingMeals = await getMeals(protocol?._id ?? "");
-
-  //       if (existingMeals.length > 0) {
-  //         if (!cancelled) {
-  //           setMeals(existingMeals);
-  //           setLoading(false);
-  //         }
-  //         return;
-  //       }
-
-  //       // 🔒 LOCK before async starts
-  //       hasCreatedMeals.current = true;
-
-  //       const userId = getUserId() ?? profile?._id;
-  //       const res = await triggerGenerateNutrition(userId ?? "");
-
-  //       const parsed = JSON.parse(res.response.result);
-
-  //       const meals = [
-  //         { type: "breakfast", data: parsed.breakfast },
-  //         { type: "lunch", data: parsed.lunch },
-  //         { type: "dinner", data: parsed.dinner },
-  //         { type: "snacks", data: parsed.snacks },
-  //       ];
-
-  //       await Promise.all(
-  //         meals.map((meal) =>
-  //           createMeal({
-  //             protocol: protocol?._id ?? "",
-  //             meal_type: meal.type,
-  //             name: meal.data.name,
-  //             description: meal.data.description,
-  //             nutrients: meal.data.nutrients,
-  //           }),
-  //         ),
-  //       );
-
-  //       const createdMeals = await getMeals(protocol?._id ?? "");
-
-  //       if (!cancelled) {
-  //         setMeals(createdMeals);
-  //         setLoading(false);
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       if (!cancelled) {
-  //         setMeals(fallbackMeals);
-  //         setLoading(false);
-  //       }
-  //     }
-  //   }
-
-  //   load();
-
-  //   return () => {
-  //     cancelled = true;
-  //   };
-  // }, [profile, protocol?._id]);
 
   useEffect(() => {
     if (!profile || !protocol?._id) return;
@@ -233,23 +96,32 @@ export default function NutritionPage() {
 
     async function load() {
       try {
-        const existingMeals = await getMeals(protocol?._id ?? "");
-
-        if (existingMeals.length > 0) {
+        // 1. Check if meals already exist for today's protocol
+        const existing = await getMeals(protocol!._id);
+        if (existing.length > 0) {
           if (!cancelled) {
-            setMeals(groupMeals(existingMeals)); // ← was setMeals(existingMeals)
-            setLoadingMeals(false); // ← was setLoading(false)
+            setMeals(groupMeals(existing));
+            setLoadingMeals(false);
           }
           return;
         }
 
-        hasCreatedMeals.current = true;
+        // 2. Compute week context client-side from dataset
+        const weekCtx = getWeekContext(
+          profile!.journey_type ?? "trying_to_conceive",
+          profile!.current_week ?? 0,
+        );
 
-        const userId = getUserId() ?? profile?._id;
-        const res = await triggerGenerateNutrition(userId ?? "");
+        // 3. Generate meals with week context
+        hasCreatedMeals.current = true;
+        setGenerating(true);
+
+        const userId = getUserId() ?? profile!._id;
+        const res = await triggerGenerateNutrition(userId, weekCtx);
 
         const parsed = JSON.parse(res.response.result);
 
+        // 4. Create meal records in Bubble — includes baby_benefit + mother_benefit
         const mealList = [
           { type: "breakfast", data: parsed.breakfast },
           { type: "lunch", data: parsed.lunch },
@@ -260,27 +132,27 @@ export default function NutritionPage() {
         await Promise.all(
           mealList.map((meal) =>
             createMeal({
-              protocol: protocol?._id ?? "",
+              protocol: protocol!._id,
               meal_type: meal.type,
               name: meal.data.name,
               description: meal.data.description,
               nutrients: meal.data.nutrients,
+              baby_benefit: meal.data.baby_benefit ?? "",
+              mother_benefit: meal.data.mother_benefit ?? "",
             }),
           ),
         );
 
-        const createdMeals = await getMeals(protocol?._id ?? "");
-
+        // 5. Fetch and render
+        const created = await getMeals(protocol!._id);
         if (!cancelled) {
-          setMeals(groupMeals(createdMeals)); // ← was setMeals(createdMeals)
-          setLoadingMeals(false); // ← was setLoading(false)
+          setMeals(groupMeals(created));
+          setLoadingMeals(false);
+          setGenerating(false);
         }
       } catch (err) {
         console.error(err);
-        if (!cancelled) {
-          setMeals(groupMeals(fallbackMeals)); // ← was setMeals(fallbackMeals)
-          setLoadingMeals(false); // ← was setLoading(false)
-        }
+        if (!cancelled) setLoadingMeals(false);
       }
     }
 
@@ -308,18 +180,22 @@ export default function NutritionPage() {
     return <LoadingScreen message="Loading your nutrition plan..." />;
 
   const jt = profile.journey_type ?? "trying_to_conceive";
+  const isPregnant = jt === "currently_pregnant";
+
   const badge =
     jt === "currently_pregnant"
-      ? "Trimester 2 Focus"
+      ? `Week ${profile.current_week ?? ""} Focus`
       : jt === "postpartum"
         ? "Recovery Focus"
         : "Fertility Focus";
+
   const headerSub =
     jt === "currently_pregnant"
-      ? "Optimized for your pregnancy — Brain & Nervous System Support"
+      ? `Optimized for week ${profile.current_week ?? ""} — matched to your baby's development`
       : jt === "postpartum"
         ? "Optimized for Recovery — Restoration & Replenishment"
         : "Optimized for Fertility — Hormonal Balance & Egg Quality";
+
   const suppList = protocol?.supplements
     ? protocol.supplements
         .split(",")
@@ -363,6 +239,7 @@ export default function NutritionPage() {
             </p>
           </div>
         )}
+
         {protocol?.avoid_today && (
           <div
             className="mt-3 flex items-start gap-2 px-3.5 py-2.5 rounded-xl"
@@ -413,7 +290,7 @@ export default function NutritionPage() {
                     );
                     setExpandedMeal(null);
                   }}
-                  className="w-full px-5 py-4.5 bg-transparent border-none cursor-pointer text-left"
+                  className="w-full px-5 py-4.5 bg-transparent border-none cursor-pointer text-left py-3"
                 >
                   <div className="flex items-center gap-3.5">
                     <div
@@ -425,7 +302,7 @@ export default function NutritionPage() {
                         color={section.iconColor}
                       />
                     </div>
-                    <div className="flex-1 p-3">
+                    <div className="flex-1">
                       <h3 className="text-lg font-semibold text-primary">
                         {section.label}
                       </h3>
@@ -460,7 +337,7 @@ export default function NutritionPage() {
                         return (
                           <div
                             key={mKey}
-                            className="bg-elevated rounded-[18px] overflow-hidden border border-border"
+                            className="bg-elevated rounded-[18px] overflow-hidden border border-border p-3"
                           >
                             <button
                               onClick={() =>
@@ -470,7 +347,7 @@ export default function NutritionPage() {
                               }
                               className="w-full px-4.5 py-4 bg-transparent border-none cursor-pointer text-left"
                             >
-                              <div className="flex items-start justify-between gap-2 p-3">
+                              <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1">
                                   <h4 className="text-md font-semibold text-primary leading-tight">
                                     {meal.name}
@@ -491,11 +368,13 @@ export default function NutritionPage() {
                                 />
                               </div>
                             </button>
+
                             {expandedMeal === mKey && (
                               <div className="px-4.5 pb-4.5">
+                                {/* Nutrients + calories */}
                                 <div className="border-t border-border pt-3.5 mb-3.5 flex flex-col gap-2.5">
                                   {meal.nutrients && (
-                                    <div className="flex items-baseline gap-2.5 pb-2.5 border-b border-border px-3">
+                                    <div className="flex items-baseline gap-2.5 pb-2.5 border-b border-border">
                                       <span
                                         className="text-2xs text-muted font-semibold uppercase tracking-widest shrink-0"
                                         style={{ minWidth: 88 }}
@@ -521,22 +400,73 @@ export default function NutritionPage() {
                                     </div>
                                   )}
                                 </div>
-                                <div
-                                  className="px-3.5 py-3 rounded-2xl mb-3.5 mx-3"
-                                  style={{
-                                    background: "rgba(212,176,106,0.07)",
-                                    borderLeft:
-                                      "2px solid rgba(212,176,106,0.35)",
-                                  }}
-                                >
-                                  <p className="text-2xs text-gold uppercase tracking-widest font-semibold mb-1.5">
-                                    Why this matters today
-                                  </p>
-                                  <p className="text-sm text-secondary leading-relaxed font-serif italic">
-                                    {meal.description}
-                                  </p>
-                                </div>
-                                <div className="flex items-start gap-2 px-3 py-2.5 bg-section rounded-xl mx-3 mb-2">
+
+                                {/* For your baby — week-specific developmental context */}
+                                {meal.baby_benefit && (
+                                  <div
+                                    className="px-3.5 py-3 rounded-2xl mb-3"
+                                    style={{
+                                      background: "rgba(212,176,106,0.07)",
+                                      borderLeft:
+                                        "2px solid rgba(212,176,106,0.35)",
+                                    }}
+                                  >
+                                    <p className="text-2xs text-gold uppercase tracking-widest font-semibold mb-1.5">
+                                      {isPregnant
+                                        ? `For your baby · Week ${profile.current_week ?? ""}`
+                                        : "Baby development"}
+                                    </p>
+                                    <p className="text-sm text-secondary leading-relaxed font-serif italic">
+                                      {meal.baby_benefit}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {/* For you — maternal benefit */}
+                                {meal.mother_benefit && (
+                                  <div
+                                    className="px-3.5 py-3 rounded-2xl mb-3"
+                                    style={{
+                                      background: "rgba(31,122,90,0.06)",
+                                      borderLeft:
+                                        "2px solid rgba(31,122,90,0.25)",
+                                    }}
+                                  >
+                                    <p
+                                      className="text-2xs uppercase tracking-widest font-semibold mb-1.5"
+                                      style={{ color: SUCCESS }}
+                                    >
+                                      For you
+                                    </p>
+                                    <p
+                                      className="text-sm leading-relaxed font-serif italic"
+                                      style={{ color: "#7B7268" }}
+                                    >
+                                      {meal.mother_benefit}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {/* Fallback for older meals without these fields */}
+                                {!meal.baby_benefit && !meal.mother_benefit && (
+                                  <div
+                                    className="px-3.5 py-3 rounded-2xl mb-3"
+                                    style={{
+                                      background: "rgba(212,176,106,0.07)",
+                                      borderLeft:
+                                        "2px solid rgba(212,176,106,0.35)",
+                                    }}
+                                  >
+                                    <p className="text-2xs text-gold uppercase tracking-widest font-semibold mb-1.5">
+                                      Why this matters today
+                                    </p>
+                                    <p className="text-sm text-secondary leading-relaxed font-serif italic">
+                                      {meal.description}
+                                    </p>
+                                  </div>
+                                )}
+
+                                <div className="flex items-start gap-2 px-3 py-2.5 bg-section rounded-xl">
                                   <Info
                                     size={12}
                                     className="text-muted shrink-0 mt-0.5"
@@ -559,7 +489,7 @@ export default function NutritionPage() {
           })
         )}
 
-        {/* Supplements from protocol */}
+        {/* Supplements */}
         {suppList.length > 0 && (
           <div className="bg-card rounded-3xl overflow-hidden border border-border">
             <button
@@ -568,7 +498,7 @@ export default function NutritionPage() {
                   s === "supplements" ? null : "supplements",
                 )
               }
-              className="w-full px-5 py-4.5 bg-transparent border-none cursor-pointer text-left"
+              className="w-full px-5 py-4.5 bg-transparent border-none cursor-pointer text-left py-3"
             >
               <div className="flex items-center gap-3.5">
                 <div
@@ -577,7 +507,7 @@ export default function NutritionPage() {
                 >
                   <Pill size={18} color={GOLD} />
                 </div>
-                <div className="flex-1 p-3">
+                <div className="flex-1">
                   <h3 className="text-lg font-semibold text-primary">
                     Vitamins & Supplements
                   </h3>
@@ -638,7 +568,7 @@ export default function NutritionPage() {
                           />
                           <p className="text-2xs text-muted leading-relaxed">
                             Always confirm supplement changes with your
-                            healthcare provider before adjusting your protocol.
+                            healthcare provider.
                           </p>
                         </div>
                       </div>
