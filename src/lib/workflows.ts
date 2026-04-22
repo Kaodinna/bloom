@@ -7,7 +7,7 @@ import { bubbleGet, bubblePost } from "./bubble";
 import { getToken } from "./auth";
 import { Job } from "@/data/job_index";
 import { OnboardingData } from "@/store/onboarding";
-import { WeekContext } from "@/data/weekContext";
+import { MilkContext, WeekContext } from "@/data/weekContext";
 
 function tok(): string {
   const t = getToken();
@@ -74,6 +74,7 @@ export async function triggerGenerateScore(userId: string) {
 export async function triggerGenerateNutrition(
   userId: string,
   weekCtx: WeekContext,
+  milkCtx?: MilkContext,
 ) {
   return bubbleGet(
     "/wf/generate_nutrition",
@@ -82,6 +83,15 @@ export async function triggerGenerateNutrition(
       week_context: weekCtx.week_context,
       food_matches: weekCtx.food_matches,
       food_detail: weekCtx.food_detail,
+      // Postpartum milk optimization — empty strings for non-postpartum
+      milk_logic: milkCtx?.milk_logic ?? "",
+      key_nutrients_milk: milkCtx?.key_nutrients ?? "",
+      blood_support: milkCtx?.blood_support ?? "",
+      milk_boosters: milkCtx?.milk_boosters ?? "",
+      evening_feeding: milkCtx?.evening_feeding ?? "",
+      oral_health: milkCtx?.oral_health ?? "",
+      environment: milkCtx?.environment ?? "",
+      electrical: milkCtx?.electrical ?? "",
     },
     tok(),
   );

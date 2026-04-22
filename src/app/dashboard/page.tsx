@@ -137,6 +137,136 @@ const JT_CONTENT: Record<
     dailyFocus: "Protein-rich meals + pelvic breathing",
   },
 };
+
+function getPregnancyTrimester(week: number) {
+  if (week <= 12)
+    return {
+      name: "First Trimester",
+      next: "Second trimester begins at week 13",
+    };
+  if (week <= 26)
+    return {
+      name: "Second Trimester",
+      next: "Third trimester begins at week 27",
+    };
+  return {
+    name: "Third Trimester",
+    next:
+      week >= 38 ? "Birth window approaching" : `${40 - week} weeks remaining`,
+  };
+}
+
+function getPostpartumPhase(week: number) {
+  if (week <= 2)
+    return {
+      name: "Immediate Recovery",
+      next: "Hormone stabilisation begins at week 3",
+    };
+  if (week <= 6)
+    return {
+      name: "Acute Recovery",
+      next: "6-week postnatal check approaching",
+    };
+  if (week <= 12)
+    return {
+      name: "Active Recovery",
+      next: "Core reconnection phase at week 13",
+    };
+  return { name: "Rebuilding Phase", next: "Full integration and restoration" };
+}
+
+function getPregnancyNutrient(week: number) {
+  if (week <= 4)
+    return {
+      name: "Folate",
+      benefit: "Prevents neural tube defects — critical in the first 4 weeks.",
+      foods: ["Spinach", "Avocado", "Lentils"],
+    };
+  if (week <= 8)
+    return {
+      name: "Choline",
+      benefit: "Drives neural tube closure and early brain cell formation.",
+      foods: ["Eggs", "Duck eggs", "Broccoli"],
+    };
+  if (week <= 12)
+    return {
+      name: "Folate & Iron",
+      benefit:
+        "DNA replication is at its peak — folate and iron are essential.",
+      foods: ["Spinach", "Lentils", "Kiwi"],
+    };
+  if (week <= 16)
+    return {
+      name: "Calcium",
+      benefit:
+        "The skeleton is hardening — calcium drives bone mineralisation.",
+      foods: ["Greek yogurt", "Sesame seeds", "Almonds"],
+    };
+  if (week <= 20)
+    return {
+      name: "DHA",
+      benefit:
+        "Brain synaptic connections are forming rapidly — DHA fuels wiring.",
+      foods: ["Salmon", "Walnuts", "Chia seeds"],
+    };
+  if (week <= 24)
+    return {
+      name: "DHA & Iron",
+      benefit:
+        "Lung development and peak brain architecture — oxygen and fats.",
+      foods: ["Salmon", "Beetroot", "Pumpkin seeds"],
+    };
+  if (week <= 28)
+    return {
+      name: "Vitamin A",
+      benefit:
+        "Baby's eyes are opening — vitamin A supports vision development.",
+      foods: ["Sweet potatoes", "Mango", "Carrots"],
+    };
+  if (week <= 32)
+    return {
+      name: "Calcium & Vitamin D",
+      benefit: "Bones are hardening rapidly — calcium and D are critical.",
+      foods: ["Greek yogurt", "Salmon", "Mushrooms"],
+    };
+  if (week <= 36)
+    return {
+      name: "Magnesium",
+      benefit: "Supports lung maturation and reduces cramps as birth nears.",
+      foods: ["Pumpkin seeds", "Cashews", "Almonds"],
+    };
+  return {
+    name: "Iron & Magnesium",
+    benefit:
+      "Dates support cervical ripening. Iron prepares for birth blood loss.",
+    foods: ["Dates", "Spinach", "Salmon"],
+  };
+}
+function getPostpartumNutrient(week: number) {
+  if (week <= 2)
+    return {
+      name: "Iron",
+      benefit: "Rebuilds blood lost during birth — critical in week 1–2.",
+      foods: ["Red meat", "Lentils", "Spinach"],
+    };
+  if (week <= 6)
+    return {
+      name: "Iron & Protein",
+      benefit: "Blood restoration and tissue repair — your body is rebuilding.",
+      foods: ["Eggs", "Lentils", "Salmon"],
+    };
+  if (week <= 12)
+    return {
+      name: "DHA",
+      benefit: "Enriches breast milk fats for baby brain development.",
+      foods: ["Salmon", "Walnuts", "Chia seeds"],
+    };
+  return {
+    name: "Protein",
+    benefit: "Rebuilds muscle and supports sustained milk production.",
+    foods: ["Eggs", "Greek yogurt", "Turkey"],
+  };
+}
 // Add this above the component
 const SKIN_DATA: Record<
   number,
@@ -280,7 +410,120 @@ export default function DashboardPage() {
     return <LoadingScreen message="Calibrating your protocol..." />;
 
   const jt = profile.journey_type ?? "trying_to_conceive";
-  const d = JT_CONTENT[jt] ?? JT_CONTENT.trying_to_conceive;
+  const week = profile.current_week ?? 0;
+  const isPreg = jt === "currently_pregnant";
+  const isPost = jt === "postpartum";
+  const trimester = isPreg ? getPregnancyTrimester(week) : null;
+  const ppPhase = isPost ? getPostpartumPhase(week) : null;
+  const nutrient = isPreg
+    ? getPregnancyNutrient(week)
+    : isPost
+      ? getPostpartumNutrient(week)
+      : {
+          name: "Folate",
+          benefit:
+            "Supports healthy egg development and prepares your body for conception.",
+          foods: ["Leafy greens", "Lentils", "Asparagus"],
+        };
+  const d = {
+    scoreLabel: isPreg
+      ? "Pregnancy Optimization"
+      : isPost
+        ? "Recovery Readiness"
+        : "Fertility Readiness",
+
+    week: isPreg
+      ? week > 0
+        ? `Week ${week} — ${trimester?.name ?? ""}`
+        : "Pregnancy"
+      : isPost
+        ? week > 0
+          ? `Week ${week} Postpartum — ${ppPhase?.name ?? ""}`
+          : "Postpartum Recovery"
+        : "Fertility Window",
+
+    emotionalLine:
+      protocol?.fertility_tip ||
+      (isPreg
+        ? `You are in week ${week} — your body is doing something extraordinary.`
+        : isPost
+          ? "You've brought new life into the world — now it's your turn to be nourished."
+          : "This is where everything begins — your body is already preparing for something profound."),
+
+    stageNow: isPreg
+      ? trimester
+        ? `${trimester.name} · Week ${week}`
+        : "Your pregnancy"
+      : isPost
+        ? ppPhase
+          ? `${ppPhase.name} · Week ${week} postpartum`
+          : "Postpartum recovery"
+        : "Fertility preparation · Tracking active",
+
+    stageNext: isPreg
+      ? (trimester?.next ?? "Continuing your pregnancy journey")
+      : isPost
+        ? (ppPhase?.next ?? "Progressive recovery")
+        : "Fertile window — ovulation tracking active",
+
+    babyMilestone: protocol?.baby_focus ?? null,
+
+    nutrientName: nutrient.name,
+    nutrientBenefit: protocol?.nutrition_plan ?? nutrient.benefit,
+    nutrientFoods: nutrient.foods,
+
+    hydration: isPost ? "~2.5–3.0L" : isPreg ? "~2.3L" : "~2.0L",
+
+    hydrationTip: isPost
+      ? "Higher hydration supports breastfeeding — blood volume determines milk quality."
+      : isPreg
+        ? "Small, frequent intake improves absorption and reduces nausea."
+        : "Optimal hydration supports cervical mucus quality and hormonal balance.",
+
+    movementFocus:
+      protocol?.movement ||
+      (isPreg
+        ? week <= 12
+          ? "Gentle yoga & breathwork"
+          : week <= 26
+            ? "Prenatal yoga & walking"
+            : "Pelvic floor & gentle walking"
+        : isPost
+          ? week <= 2
+            ? "Rest only"
+            : week <= 6
+              ? "Diaphragmatic breathing"
+              : week <= 12
+                ? "Pelvic floor + gentle walking"
+                : "Progressive movement"
+          : "Gentle yoga & pelvic mobility"),
+
+    movementBenefit: isPost
+      ? week <= 6
+        ? "Gentle breathwork activates the deep core safely and supports pelvic floor recovery."
+        : "Progressive movement supports circulation, hormone regulation, and milk production."
+      : isPreg
+        ? "20–30 minutes of appropriate movement improves circulation and reduces discomfort."
+        : "20–30 minutes opens the hips and supports uterine circulation.",
+
+    sunUV: "Moderate",
+    sunWindow: "11:30 – 13:00",
+
+    sunBody: isPost
+      ? "Morning light resets your circadian rhythm, supports postpartum mood, and regulates the baby's sleep-wake cycle through your milk."
+      : isPreg
+        ? `Midday sun supports vitamin D synthesis at week ${week} — essential for baby bone development.`
+        : "15–20 minutes of midday sun supports vitamin D, which plays a direct role in ovarian function.",
+
+    dailyFocus: protocol?.fertility_tip?.trim()
+      ? protocol.fertility_tip.split(".")[0]
+      : isPost
+        ? "Iron-rich meals + pelvic breathing"
+        : isPreg
+          ? `${nutrient.name} focus + gentle movement`
+          : "Leafy greens + gentle hip yoga",
+  };
+  // const d = JT_CONTENT[jt] ?? JT_CONTENT.trying_to_conceive;
   const idx = STAGE_IDX[jt] ?? 1;
   const now = new Date();
   const h = now.getHours();

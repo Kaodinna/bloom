@@ -5,7 +5,7 @@ import { useProtocol } from "@/hooks/useProtocol";
 import { useAppStore } from "@/store/app";
 import { createMeal, getMeals } from "@/lib/data";
 import { triggerGenerateNutrition } from "@/lib/workflows";
-import { getWeekContext } from "@/data/weekContext";
+import { getMilkContext, getWeekContext } from "@/data/weekContext";
 import { getUserId } from "@/lib/auth";
 import BottomNav from "@/components/shared/BottomNav";
 import LoadingScreen from "@/components/shared/LoadingScreen";
@@ -107,17 +107,17 @@ export default function NutritionPage() {
         }
 
         // 2. Compute week context client-side from dataset
-        const weekCtx = getWeekContext(
-          profile!.journey_type ?? "trying_to_conceive",
-          profile!.current_week ?? 0,
-        );
+        const jt = profile!.journey_type ?? "trying_to_conceive";
+        const weekCtx = getWeekContext(jt, profile!.current_week ?? 0);
+        // Milk context only for postpartum — blood→milk→baby chain
+        const milkCtx = jt === "postpartum" ? getMilkContext() : undefined;
 
         // 3. Generate meals with week context
         hasCreatedMeals.current = true;
         setGenerating(true);
 
         const userId = getUserId() ?? profile!._id;
-        const res = await triggerGenerateNutrition(userId, weekCtx);
+        const res = await triggerGenerateNutrition(userId, weekCtx, milkCtx);
 
         const parsed = JSON.parse(res.response.result);
 
@@ -414,7 +414,9 @@ export default function NutritionPage() {
                                     <p className="text-2xs text-gold uppercase tracking-widest font-semibold mb-1.5">
                                       {isPregnant
                                         ? `For your baby · Week ${profile.current_week ?? ""}`
-                                        : "Baby development"}
+                                        : jt === "postpartum"
+                                          ? "For your baby via milk"
+                                          : "Fertility benefit"}
                                     </p>
                                     <p className="text-sm text-secondary leading-relaxed font-serif italic">
                                       {meal.baby_benefit}

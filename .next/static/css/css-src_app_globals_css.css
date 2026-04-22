@@ -515,10 +515,6 @@ body{
 .z-50{
   z-index: 50;
 }
-.mx-3{
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
-}
 .mx-3\.5{
   margin-left: 0.875rem;
   margin-right: 0.875rem;
