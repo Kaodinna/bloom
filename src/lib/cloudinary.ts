@@ -1,20 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// Cloudinary direct upload (unsigned preset — no server needed)
-//
-// Setup:
-//   1. Create a Cloudinary account at cloudinary.com
-//   2. Go to Settings → Upload → Upload presets → Add preset
-//      - Signing mode: Unsigned
-//      - Folder: bloom-community  (optional)
-//      - Save preset name as NEXT_PUBLIC_CLOUDINARY_PRESET
-//   3. Your cloud name is on the dashboard
-//      - Save as NEXT_PUBLIC_CLOUDINARY_CLOUD
-//
-// .env.local:
-//   NEXT_PUBLIC_CLOUDINARY_CLOUD=your_cloud_name
-//   NEXT_PUBLIC_CLOUDINARY_PRESET=your_unsigned_preset_name
-// ─────────────────────────────────────────────────────────────
-
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD as string;
 const PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string;
 
