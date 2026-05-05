@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/hooks/useProfile";
 import { useAppStore } from "@/store/app";
@@ -131,9 +131,24 @@ export default function ProfilePage() {
   const initials = name.slice(0, 2).toUpperCase();
 
   // Job intelligence
-  const femaleJob = lookupJob(profile.job_type ?? "", "female");
-  const maleJob = lookupJob(profile.partners_job_type ?? "", "male");
-
+  // const femaleJob = lookupJob(profile.job_type ?? "", "female");
+  // const maleJob = lookupJob(profile.partners_job_type ?? "", "male");
+  const [femaleJob, setFemaleJob] = useState<any>(() =>
+    lookupJob(profile.job_type ?? "", "female"),
+  );
+  const [maleJob, setMaleJob] = useState<any>(() =>
+    lookupJob(profile.partners_job_type ?? "", "male"),
+  );
+  useEffect(() => {
+    import("@/lib/datasets").then(({ lookupJobDynamic }) => {
+      lookupJobDynamic(profile.job_type ?? "", "female")
+        .then((r) => r && setFemaleJob(r))
+        .catch(() => {});
+      lookupJobDynamic(profile.partners_job_type ?? "", "male")
+        .then((r) => r && setMaleJob(r))
+        .catch(() => {});
+    });
+  }, [profile.job_type, profile.partners_job_type]);
   const STATUS_MAP: Record<
     string,
     { label: string; desc: string; icon: React.ReactNode; color: string }
@@ -1064,7 +1079,7 @@ export default function ProfilePage() {
                   {femaleJob.job}
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {femaleJob.nutrient_risks.map((n) => (
+                  {femaleJob.nutrient_risks.map((n: any) => (
                     <span
                       key={n}
                       style={{

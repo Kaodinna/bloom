@@ -3,13 +3,23 @@ import { create } from "zustand";
 export interface Profile {
   _id: string;
   first_name: string;
+  name_text?: string;
+  journey_type_text?: string;
+  daily_sun_expore_text?: string;
+  diet_type_text?: string;
+  male_job_risks_text?: string;
+  pregnant_boolean?: boolean;
+  partners_activity_level_text?: string;
+  skin_type_text?: string;
   age: number;
   height?: number;
+  fertility_score_number?: number;
   weight?: number;
   journey_type: string;
   fertility_score: number;
   current_protocol?: string;
   onboarding_done: boolean;
+  current_week_number?: number;
   // timeline
   target_conception_season?: string;
   previous_children?: number;

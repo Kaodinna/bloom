@@ -10,6 +10,12 @@ import { getUserId } from "@/lib/auth";
 import BottomNav from "@/components/shared/BottomNav";
 import LoadingScreen from "@/components/shared/LoadingScreen";
 import { ChevronLeft, ChevronRight, Check, Sparkles } from "lucide-react";
+import {
+  EarlyBrainDevelopmentBox,
+  EveningBreastfeedingBox,
+  HospitalBirthBox,
+  MotherBabyClosenessBox,
+} from "@/components/shared/InfoBoxes";
 
 const GOLD = "#D4B06A";
 const SUCCESS = "#1F7A5A";
@@ -502,6 +508,17 @@ export default function RecoveryPage() {
           Regenerate for Week {week}
         </button>
       </div>
+      {/* Info Boxes — postpartum educational content */}
+      <div className="px-6 mt-5 flex flex-col gap-4">
+        <p className="text-2xs text-muted uppercase tracking-widest font-semibold">
+          Recovery Knowledge
+        </p>
+        <EveningBreastfeedingBox />
+        <HospitalBirthBox />
+        <MotherBabyClosenessBox />
+        <EarlyBrainDevelopmentBox />
+      </div>
+
       <BottomNav />
     </div>
   );

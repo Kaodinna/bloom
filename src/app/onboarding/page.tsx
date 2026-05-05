@@ -243,7 +243,7 @@ function ContinueBtn({
     </button>
   );
 }
-const allFemaleJobs = getAllJobTitles("female");
+// const allFemaleJobs = getAllJobTitles("female");
 export default function OnboardingPage() {
   const router = useRouter();
   const { data, setField } = useOnboarding();
@@ -262,11 +262,30 @@ export default function OnboardingPage() {
 
   const [showJobList, setShowJobList] = useState(false);
   const [showPartnerJobList, setShowPartnerJobList] = useState(false);
-
+  const [allFemaleJobs, setAllFemaleJobs] = useState<string[]>(() =>
+    getAllJobTitles("female"),
+  );
+  useEffect(() => {
+    import("@/lib/datasets").then(({ getAllJobTitlesDynamic }) =>
+      getAllJobTitlesDynamic("female")
+        .then(setAllFemaleJobs)
+        .catch(() => {}),
+    );
+  }, []);
   const filtered = allFemaleJobs
     .filter((j) => j.toLowerCase().includes(search.toLowerCase()))
     .slice(0, 8);
-  const allMaleJobs = getAllJobTitles("male");
+  // const allMaleJobs = getAllJobTitles("male");
+  const [allMaleJobs, setAllMaleJobs] = useState<string[]>(() =>
+    getAllJobTitles("male"),
+  );
+  useEffect(() => {
+    import("@/lib/datasets").then(({ getAllJobTitlesDynamic }) =>
+      getAllJobTitlesDynamic("male")
+        .then(setAllMaleJobs)
+        .catch(() => {}),
+    );
+  }, []);
   const mfiltered = allMaleJobs
     .filter((j) => j.toLowerCase().includes(mSearch.toLowerCase()))
     .slice(0, 8);
@@ -294,8 +313,16 @@ export default function OnboardingPage() {
         baby: fi.baby_impact ?? fi.baby ?? "",
       };
     }
-    const femaleJob = lookupJob(data.job_type, "female");
-    const maleJob = lookupJob(data.partners_job_type, "male");
+    // const femaleJob = lookupJob(data.job_type, "female");
+    // const maleJob = lookupJob(data.partners_job_type, "male");
+    // const maleImpact = getMaleImpact(maleJob);
+    const { lookupJobDynamic } = await import("@/lib/datasets");
+    const femaleJob =
+      (await lookupJobDynamic(data.job_type, "female")) ??
+      lookupJob(data.job_type, "female");
+    const maleJob =
+      (await lookupJobDynamic(data.partners_job_type, "male")) ??
+      lookupJob(data.partners_job_type, "male");
     const maleImpact = getMaleImpact(maleJob);
     try {
       await updateProfile({
